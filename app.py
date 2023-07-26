@@ -5,6 +5,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.spatial.distance import cityblock
 from io import BytesIO
 
+#For midi convert
+
+from basic_pitch.inference import predict
+from basic_pitch import ICASSP_2022_MODEL_PATH
+from basic_pitch.inference import predict_and_save
 
 app = Flask(__name__)
 
@@ -122,6 +127,30 @@ def compare_midi():
 
     return jsonify({"error": "MIDI files are required"})
 
+@app.route('/convert_midi', methods=['POST'])
+def convert_midi():
+    audio_file = request.files['audio'].read()
+
+    if audio_file:
+        input_audio_path_list = [audio_file]
+        output_directory = ""  # Specify the directory where you want to save the output MIDI file,
+        save_midi = True  # Set to True if you want to save the generated MIDI file
+        sonify_midi = False  # Set to True if you want to play the generated MIDI file
+        save_model_outputs = False  # Set to True if you want to save the intermediate model outputs
+        save_notes = False  # Set to True if you want to save the extracted notes from the audio
+
+        predict_and_save(
+            input_audio_path_list,
+            output_directory,
+            save_midi,
+            sonify_midi,
+            save_model_outputs,
+            save_notes
+        )
+
+        return jsonify({"message": "MIDI conversion completed."})
+
+    return jsonify({"error": "Audio file is required."})
 
 if __name__ == '__main__':
     app.run(debug=True)
