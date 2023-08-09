@@ -7,9 +7,10 @@ from io import BytesIO
 
 #For midi convert
 
-from basic_pitch.inference import predict
-from basic_pitch import ICASSP_2022_MODEL_PATH
+from moviepy.editor import VideoFileClip
+from pydub import AudioSegment
 from basic_pitch.inference import predict_and_save
+from basic_pitch import ICASSP_2022_MODEL_PATH
 
 app = Flask(__name__)
 
@@ -77,6 +78,12 @@ def compare_note_strings(note_strings1, note_strings2):
     return differences
 
 
+def convert_to_mp3(video_data):
+    video_clip = VideoFileClip(filename='video.mp4', fps_source='fps')
+    audio_clip = video_clip.audio
+    mp3_data = audio_clip.write_to_memory(format='mp3')
+    return mp3_data
+
 @app.route('/compare_midi', methods=['POST'])
 def compare_midi():
     file1 = request.files['file1'].read()
@@ -129,11 +136,17 @@ def compare_midi():
 
 @app.route('/convert_midi', methods=['POST'])
 def convert_midi():
-    audio_file = request.files['audio'].read()
+    video_file = request.files['video']
 
-    if audio_file:
-        input_audio_path_list = [audio_file]
-        output_directory = ""  # Specify the directory where you want to save the output MIDI file,
+    if video_file:
+        video_data = video_file.read()
+
+        # Step 1: Convert Video to MP3
+        mp3_data = convert_to_mp3(video_data)
+
+        # Step 2: Perform Pitch Inference and Save
+        input_audio_path_list = [mp3_data]
+        output_directory = ""  # Specify the directory where you want to save the output MIDI file
         save_midi = True  # Set to True if you want to save the generated MIDI file
         sonify_midi = False  # Set to True if you want to play the generated MIDI file
         save_model_outputs = False  # Set to True if you want to save the intermediate model outputs
@@ -150,7 +163,8 @@ def convert_midi():
 
         return jsonify({"message": "MIDI conversion completed."})
 
-    return jsonify({"error": "Audio file is required."})
+    return jsonify({"error": "Video file is required."})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
