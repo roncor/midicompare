@@ -1,2 +1,5 @@
 #folder with python libraries
-convert/
+#convert/
+
+# inside .gitignore
+.pyc

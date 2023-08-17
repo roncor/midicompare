@@ -146,7 +146,7 @@ def convert_midi():
 
         # Step 2: Perform Pitch Inference and Save
         input_audio_path_list = [mp3_data]
-        output_directory = ""  # Specify the directory where you want to save the output MIDI file
+        output_directory = ""  # Specify the directory to save the output MIDI file
         save_midi = True  # Set to True if you want to save the generated MIDI file
         sonify_midi = False  # Set to True if you want to play the generated MIDI file
         save_model_outputs = False  # Set to True if you want to save the intermediate model outputs
