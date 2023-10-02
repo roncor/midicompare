@@ -42,12 +42,12 @@ The API responds with a JSON object that contains the following keys:
 
 Note: Update the output_directory in the convert_midi function to specify the directory to save the output MIDI file.
 
-# Using gunicorn
+## Using gunicorn
 If you haven’t installed Gunicorn, you can do so using pip:
 
 `pip install gunicorn`
 
-# Create a Gunicorn Configuration File:
+## Create a Gunicorn Configuration File:
 Create a file named gunicorn_config.py and add the following contents to configure the bind address and the number of worker processes:
 
 ```python
@@ -58,4 +58,18 @@ workers = 2
 
 This configuration will run the Gunicorn server on all available network interfaces on port 8080 with 2 worker processes.
 
+## Run Gunicorn:
 
+Run the following command to start Gunicorn with the configuration file:
+
+`gunicorn -c gunicorn_config.py app:app`
+
+# Access the Deployed Application:
+
+Open a web browser and enter the URL http://<your-server-ip>:8080 to access your Flask application served by Gunicorn.
+#Important Note:
+
+* Ensure that the server’s firewall has the chosen port (here 8080) open, so external traffic can access the Gunicorn-served application.
+* For production deployments, it is also common to put a reverse proxy server (like Nginx or Apache) in front of the Gunicorn server to handle requests.
+
+This will set up a basic Gunicorn server running your Flask application. Further configuration may be necessary for production deployments, including setting up a reverse proxy with Nginx or Apache, and configuring a process manager like Systemd or Supervisor to manage the Gunicorn server process.
