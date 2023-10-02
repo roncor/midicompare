@@ -1,3 +1,12 @@
-To successfully run the script, you will need to have the following libraries installed: flask, mido, numpy, sklearn, and scipy. These libraries provide essential functionality that the script relies on. Please make sure to install these libraries before executing the script to ensure its proper execution.
+# MIDI Comparison and Conversion
 
-pip install flask mido numpy scikit-learn scipy
+This application provides two main functionalities:
+
+    Comparing two MIDI files.
+    Converting a video file to MIDI.
+
+## Installation
+
+Before you run the server, ensure you have the required packages installed. You can install them using the following command:
+  `pip install flask mido numpy scikit-learn scipy moviepy pydub basic_pitch`
+## API Endpoints
