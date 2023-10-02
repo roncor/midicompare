@@ -41,3 +41,21 @@ The API responds with a JSON object that contains the following keys:
 * The response contains a message indicating the completion of the MIDI conversion.
 
 Note: Update the output_directory in the convert_midi function to specify the directory to save the output MIDI file.
+
+# Using gunicorn
+If you haven’t installed Gunicorn, you can do so using pip:
+
+`pip install gunicorn`
+
+# Create a Gunicorn Configuration File:
+Create a file named gunicorn_config.py and add the following contents to configure the bind address and the number of worker processes:
+
+```python
+# inside gunicorn_config.py
+bind = "0.0.0.0:8080"
+workers = 2
+```
+
+This configuration will run the Gunicorn server on all available network interfaces on port 8080 with 2 worker processes.
+
+
