@@ -29,16 +29,15 @@ The API responds with a JSON object that contains the following keys:
 
 # Additional Information
 ## MIDI Comparison
-
-1. The compare_midi endpoint first extracts note, velocity, and time information from the uploaded MIDI files.
-2. It calculates the cosine similarity and Manhattan distance between the two sets of notes.
-3. It concatenates notes that occur within 10 seconds of each other and compares the resulting note strings.
-4. The response contains the normalized Manhattan distance, a message regarding the Manhattan distance, and a list of differences for each concatenated note segment.
+* The compare_midi endpoint first extracts note, velocity, and time information from the uploaded MIDI files.
+* It calculates the cosine similarity and Manhattan distance between the two sets of notes.
+* It concatenates notes that occur within 10 seconds of each other and compares the resulting note strings.
+* The response contains the normalized Manhattan distance, a message regarding the Manhattan distance, and a list of differences for each concatenated note segment.
 
 # MIDI Conversion
 
-1. The convert_midi endpoint first converts the uploaded video to MP3.
-2. It performs pitch inference on the audio and saves the result as a MIDI file.
-3. The response contains a message indicating the completion of the MIDI conversion.
+* The convert_midi endpoint first converts the uploaded video to MP3.
+* It performs pitch inference on the audio and saves the result as a MIDI file.
+* The response contains a message indicating the completion of the MIDI conversion.
 
 Note: Update the output_directory in the convert_midi function to specify the directory to save the output MIDI file.
