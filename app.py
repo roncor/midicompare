@@ -136,15 +136,15 @@ def compare_midi():
 
 @app.route('/convert_midi', methods=['POST'])
 def convert_midi():
-    video_file = request.files['video']
+    video_data = request.files['video'].read()
 
-    if video_file:
-        video_data = video_file.read()
-
+    if video_data:
         # Step 1: Convert Video to MP3
-        mp3_data = convert_to_mp3(video_data)
+        video_clip = VideoFileClip(filename=BytesIO(video_data), fps_source='fps')
+        audio_clip = video_clip.audio
+        mp3_data = audio_clip.write_to_memory(format='mp3')
 
-        # Step 2: Perform Pitch Inference and Save
+        # Step 2: Perform Pitch Inference and Save MIDI
         input_audio_path_list = [mp3_data]
         output_directory = ""  # Specify the directory to save the output MIDI file
         save_midi = True  # Set to True if you want to save the generated MIDI file
@@ -161,9 +161,17 @@ def convert_midi():
             save_notes
         )
 
+        if save_midi:
+            # Read the generated MIDI file
+            generated_midi_data = open(output_directory + 'output.mid', 'rb').read()
+
+            # Send the generated MIDI file as a response
+            return send_file(BytesIO(generated_midi_data), as_attachment=True, download_name='generated.mid')
+
         return jsonify({"message": "MIDI conversion completed."})
 
     return jsonify({"error": "Video file is required."})
+
 
 
 if __name__ == '__main__':
